@@ -1,0 +1,38 @@
+import { Transaction } from "@/types/finance";
+
+export const CATEGORIES = {
+  income: ["Salary", "Freelance", "Investments", "Other Income"],
+  expense: ["Food", "Transport", "Shopping", "Entertainment", "Bills", "Health", "Education"],
+};
+
+export const initialTransactions: Transaction[] = [
+  { id: "1", date: "2026-04-01", description: "Monthly Salary", amount: 5200, category: "Salary", type: "income" },
+  { id: "2", date: "2026-04-01", description: "Grocery Shopping", amount: 120, category: "Food", type: "expense" },
+  { id: "3", date: "2026-03-30", description: "Electric Bill", amount: 85, category: "Bills", type: "expense" },
+  { id: "4", date: "2026-03-28", description: "Freelance Project", amount: 1500, category: "Freelance", type: "income" },
+  { id: "5", date: "2026-03-27", description: "Restaurant Dinner", amount: 65, category: "Food", type: "expense" },
+  { id: "6", date: "2026-03-25", description: "Uber Rides", amount: 42, category: "Transport", type: "expense" },
+  { id: "7", date: "2026-03-22", description: "Online Course", amount: 199, category: "Education", type: "expense" },
+  { id: "8", date: "2026-03-20", description: "Dividend Income", amount: 340, category: "Investments", type: "income" },
+  { id: "9", date: "2026-03-18", description: "New Headphones", amount: 250, category: "Shopping", type: "expense" },
+  { id: "10", date: "2026-03-15", description: "Concert Tickets", amount: 90, category: "Entertainment", type: "expense" },
+  { id: "11", date: "2026-03-12", description: "Gym Membership", amount: 50, category: "Health", type: "expense" },
+  { id: "12", date: "2026-03-10", description: "Internet Bill", amount: 60, category: "Bills", type: "expense" },
+  { id: "13", date: "2026-03-08", description: "Side Project Payment", amount: 800, category: "Freelance", type: "income" },
+  { id: "14", date: "2026-03-05", description: "Coffee & Snacks", amount: 35, category: "Food", type: "expense" },
+  { id: "15", date: "2026-03-01", description: "Monthly Salary", amount: 5200, category: "Salary", type: "income" },
+  { id: "16", date: "2026-02-28", description: "Clothing", amount: 180, category: "Shopping", type: "expense" },
+  { id: "17", date: "2026-02-25", description: "Doctor Visit", amount: 120, category: "Health", type: "expense" },
+  { id: "18", date: "2026-02-20", description: "Gas Bill", amount: 45, category: "Bills", type: "expense" },
+  { id: "19", date: "2026-02-15", description: "Freelance Gig", amount: 600, category: "Freelance", type: "income" },
+  { id: "20", date: "2026-02-10", description: "Movie Night", amount: 30, category: "Entertainment", type: "expense" },
+];
+
+export const balanceTrendData = [
+  { month: "Oct", balance: 8200 },
+  { month: "Nov", balance: 9100 },
+  { month: "Dec", balance: 8700 },
+  { month: "Jan", balance: 10400 },
+  { month: "Feb", balance: 11200 },
+  { month: "Mar", balance: 12800 },
+];
