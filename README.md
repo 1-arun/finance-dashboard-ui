@@ -1,108 +1,117 @@
 # Finance Hub Dashboard
 
-A responsive finance dashboard built as a frontend internship assignment project.
+Finance Hub Dashboard is a responsive single-page finance workspace for tracking transactions, reviewing cash flow, and exploring spending insights through a polished, interview-ready UI.
 
-This application helps users track transactions, monitor income/expense trends, and view insights with an interactive, modern UI.
+It is designed as a frontend assessment project, but the implementation aims to feel like a product: clear information hierarchy, reusable components, lightweight state management, and realistic loading and error states.
 
-## Assignment Context
+## What It Does
 
-- Role target: Frontend Intern
-- Project type: Single-page dashboard app
-- Focus areas: UI implementation, state management, charts, filtering, and clean component architecture
+- Dashboard overview with balance, income, and expense summary cards
+- Balance trend and category spending visualizations
+- Transaction management with add, edit, delete, search, filter, sort, and CSV export
+- Insights page with computed financial metrics and duplicated chart views for analysis
+- Role switching between `admin` and `viewer` to simulate permission-based UI
+- Theme toggle with light/dark persistence
+- Browser-side transaction persistence using `localStorage`
+- Mock API behavior with simulated latency and occasional failures to exercise loading and error handling
 
-## Demo Highlights
+## Why It Stands Out
 
-- Dashboard with summary cards for balance, income, and expenses
-- Chart visualizations for balance trend and spending by category
-- Transaction management (add, edit, delete)
-- Search, filter, and sort transactions
-- CSV export for transaction data
-- Insights page with computed financial metrics
-- Role switching (`admin` / `viewer`) for permission simulation
-- Theme toggle (light/dark) with preference persistence
-- Data persistence in browser `localStorage`
+- The app is split into focused routes for dashboard, transactions, and insights rather than a single dense screen
+- State is centralized in a finance context, which keeps transaction logic, filters, totals, and permissions easy to reason about
+- The transaction layer behaves like a real API while still being self-contained for frontend evaluation
+- The UI uses a component-driven structure with reusable layout and dashboard pieces
 
 ## Tech Stack
 
 - React 18 + JavaScript
 - Vite 5
-- Tailwind CSS + shadcn/ui (Radix UI primitives)
+- Tailwind CSS
+- shadcn/ui with Radix UI primitives
 - React Router DOM
-- Recharts (data visualization)
-- TanStack Query provider setup
+- Recharts
+- TanStack Query provider in the app shell
 - Vitest + Testing Library
-- Playwright (E2E setup available)
+- Playwright setup for E2E testing
+
+## Core Screens
+
+- Dashboard: high-level financial snapshot, charts, and recent activity
+- Transactions: searchable, sortable transaction table with export and CRUD actions
+- Insights: analytics-focused view with summary metrics and charts
 
 ## Project Structure
 
 ```text
 src/
+  api/
+    transactionsApi.js   # mock API with latency, errors, and localStorage persistence
   components/
-    dashboard/      # charts, tables, forms, summary, role/theme controls
-    layout/         # sidebar, top navbar, app shell
-    ui/             # reusable shadcn/ui primitives
+    dashboard/           # summary cards, charts, table, form, role/theme controls
+    layout/              # app shell, sidebar, top navbar
+    ui/                  # reusable shadcn/ui primitives
   context/
-    FinanceContext.js    # global state, filters, totals, persistence
+    FinanceContext.jsx   # global finance state, filters, totals, actions
   data/
-    mockData.js          # seeded transaction and chart data
+    mockData.js          # seed transactions and chart data
   pages/
-    DashboardPage.js
-    TransactionsPage.js
-    InsightsPage.js
+    DashboardPage.jsx
+    TransactionsPage.jsx
+    InsightsPage.jsx
   utils/
-    formatters.js        # currency/date format helpers
+    formatters.js        # currency and date helpers
 ```
 
 ## Getting Started
 
-### 1. Clone and install
+### Install dependencies
 
 ```bash
-git clone <your-repo-url>
-cd finance-dashboard
 npm install
 ```
 
-### 2. Run locally
+### Run locally
 
 ```bash
 npm run dev
 ```
 
-Open the app at the local URL shown by Vite (usually `http://localhost:5173`).
+Open the app at the local URL shown by Vite, usually `http://localhost:5173`.
 
 ## Available Scripts
 
-- `npm run dev` - Start development server
-- `npm run build` - Production build
-- `npm run build:dev` - Development-mode build
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
-- `npm run test` - Run unit tests once
-- `npm run test:watch` - Run tests in watch mode
+- `npm run dev` - start the development server
+- `npm run build` - create a production build
+- `npm run build:dev` - build using the development mode config
+- `npm run preview` - preview the production build locally
+- `npm run lint` - run ESLint
+- `npm run test` - run the Vitest suite once
+- `npm run test:watch` - run Vitest in watch mode
 
-## Functional Notes
+## Implementation Notes
 
-- Transactions are persisted in `localStorage` under key `finance-dashboard-data`.
-- `admin` role can add/edit/delete transactions.
-- `viewer` role can review data but has restricted controls.
-- Currency/date formatting uses Indian locale conventions (`en-IN`, `INR`).
+- The transaction store uses `localStorage` with the key `finance-dashboard-data`
+- `admin` can add, edit, and delete transactions
+- `viewer` can inspect the data but does not get write controls
+- Amounts and dates are formatted using Indian locale conventions (`en-IN`, `INR`)
+- The mock API introduces a small random delay and simulated failures so the UI handles loading and error states realistically
 
-## What I Focused On
+## Interview Talking Points
 
-- Building reusable and composable UI components
-- Maintaining clean separation between layout, pages, and domain logic
-- Keeping interactions smooth and responsive across screen sizes
-- Implementing practical data handling: filtering, sorting, and export
+- Clean separation between layout, pages, context, and data access
+- Practical use of derived state for totals, filters, and chart-ready views
+- Reusable UI composition instead of repeated page-specific markup
+- Frontend-only persistence and API simulation that make the app easy to evaluate without a backend
 
-## Potential Improvements
+## Future Improvements
 
-- Add backend integration (auth + persistent database)
-- Add pagination and advanced filtering (date range, multi-category)
-- Increase unit/integration test coverage for context and critical flows
-- Add accessibility audit improvements (keyboard shortcuts, ARIA refinements)
-- Add CI pipeline for lint/test/build checks
+- Replace the mock API with a real backend and authentication
+- Add server-side persistence and user-specific transaction history
+- Expand tests for context logic, CRUD flows, and export behavior
+- Add more advanced filtering such as date ranges and multi-select categories
+- Add accessibility polish and keyboard shortcuts for power users
+- Add CI checks for lint, test, and build on every pull request
 
 ## Author
 
-Prepared as a frontend internship assignment project by Arun.
+Built by Arun as a frontend dashboard project.

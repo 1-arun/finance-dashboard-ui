@@ -10,18 +10,29 @@ import { useFinance } from "@/context/useFinance";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
 const COLORS = [
-  "hsl(var(--chart-1))",
-  "hsl(var(--chart-2))",
-  "hsl(var(--chart-3))",
-  "hsl(var(--chart-4))",
-  "hsl(var(--chart-5))",
-  "hsl(var(--chart-6))",
+  "#2563eb",
+  "#7c3aed",
+  "#f59e0b",
+  "#22c55e",
+  "#ef4444",
+  "#06b6d4",
+  "#ec4899",
+  "#84cc16",
+  "#f97316",
+  "#14b8a6",
+  "#8b5cf6",
+  "#0ea5e9",
 ];
+
+const getFallbackColor = (index) => {
+  const hue = (index * 137.508) % 360;
+  return `hsl(${hue} 70% 52%)`;
+};
 
 const SpendingByCategoryChart = () => {
   const { transactions } = useFinance();
 
-  const data = useMemo(() => {
+  const chartData = useMemo(() => {
     const categoryMap = new Map();
     transactions
       .filter((transaction) => transaction.type === "expense")
@@ -32,9 +43,12 @@ const SpendingByCategoryChart = () => {
         );
       });
 
-    return Array.from(categoryMap, ([name, value]) => ({ name, value })).sort(
-      (a, b) => b.value - a.value,
-    );
+    return Array.from(categoryMap, ([name, value]) => ({ name, value }))
+      .sort((a, b) => b.value - a.value || a.name.localeCompare(b.name))
+      .map((item, index) => ({
+        ...item,
+        color: COLORS[index] ?? getFallbackColor(index),
+      }));
   }, [transactions]);
 
   return (
@@ -48,11 +62,11 @@ const SpendingByCategoryChart = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="h-[260px] flex items-center">
-          <ResponsiveContainer width="55%" height="100%">
+        <div className="min-h-[260px] flex items-start gap-4">
+          <ResponsiveContainer width="55%" height={260}>
             <PieChart>
               <Pie
-                data={data}
+                data={chartData}
                 dataKey="value"
                 nameKey="name"
                 cx="50%"
@@ -61,8 +75,8 @@ const SpendingByCategoryChart = () => {
                 outerRadius={85}
                 paddingAngle={3}
               >
-                {data.map((_, i) => (
-                  <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                {chartData.map((item) => (
+                  <Cell key={item.name} fill={item.color} />
                 ))}
               </Pie>
               <Tooltip
@@ -77,12 +91,12 @@ const SpendingByCategoryChart = () => {
             </PieChart>
           </ResponsiveContainer>
 
-          <div className="flex-1 space-y-2.5">
-            {data.slice(0, 5).map((item, i) => (
+          <div className="flex-1 max-h-[260px] space-y-2.5 overflow-y-auto pr-1">
+            {chartData.map((item) => (
               <div key={item.name} className="flex items-center gap-2 text-sm">
                 <span
                   className="h-2.5 w-2.5 rounded-full shrink-0"
-                  style={{ backgroundColor: COLORS[i % COLORS.length] }}
+                  style={{ backgroundColor: item.color }}
                 />
                 <span className="text-muted-foreground truncate">
                   {item.name}
