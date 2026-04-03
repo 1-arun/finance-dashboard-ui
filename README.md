@@ -40,6 +40,16 @@ It is designed as a frontend assessment project, but the implementation aims to 
 - Transactions: searchable, sortable transaction table with export and CRUD actions
 - Insights: analytics-focused view with summary metrics and charts
 
+## Deployment
+
+Live App: [Finance Hub Dashboard](https://finance-dashboard-ui-eight-lemon.vercel.app/)
+
+## Screenshots
+
+### Dashboard
+
+![Finance Hub Dashboard](public/screenshots/image.png)
+
 ## Project Structure
 
 ```text
@@ -77,6 +87,18 @@ npm run dev
 ```
 
 Open the app at the local URL shown by Vite, usually `http://localhost:5173`.
+
+### Run tests
+
+```bash
+npm run test
+```
+
+For watch mode during development:
+
+```bash
+npm run test:watch
+```
 
 ## Available Scripts
 
