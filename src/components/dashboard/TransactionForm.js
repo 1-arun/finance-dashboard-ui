@@ -1,4 +1,3 @@
-import { jsxs as _jsxs, jsx as _jsx } from "react/jsx-runtime";
 import { useState } from "react";
 import { useFinance } from "@/context/useFinance";
 import { CATEGORIES } from "@/data/mockData";
@@ -14,6 +13,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+
 const TransactionForm = ({ transaction, onClose }) => {
   const { addTransaction, editTransaction } = useFinance();
   const { toast } = useToast();
@@ -27,10 +27,14 @@ const TransactionForm = ({ transaction, onClose }) => {
     transaction?.date || new Date().toISOString().split("T")[0],
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const categories = type === "income" ? CATEGORIES.income : CATEGORIES.expense;
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
     if (!description || !amount || !category) return;
+
     const data = {
       description,
       amount: parseFloat(amount),
@@ -38,13 +42,16 @@ const TransactionForm = ({ transaction, onClose }) => {
       type,
       date,
     };
+
     setIsSubmitting(true);
+
     try {
       if (transaction) {
         await editTransaction(transaction.id, data);
       } else {
         await addTransaction(data);
       }
+
       toast({
         title: transaction ? "Transaction updated" : "Transaction added",
       });
@@ -60,100 +67,100 @@ const TransactionForm = ({ transaction, onClose }) => {
       setIsSubmitting(false);
     }
   };
-  return _jsxs(Card, {
-    className: "border-primary/20 animate-fade-in",
-    children: [
-      _jsxs(CardHeader, {
-        className: "pb-3 flex flex-row items-center justify-between",
-        children: [
-          _jsxs(CardTitle, {
-            className: "text-sm font-semibold",
-            children: [transaction ? "Edit" : "Add", " Transaction"],
-          }),
-          _jsx(Button, {
-            variant: "ghost",
-            size: "icon",
-            className: "h-7 w-7",
-            onClick: onClose,
-            disabled: isSubmitting,
-            children: _jsx(X, { className: "h-4 w-4" }),
-          }),
-        ],
-      }),
-      _jsx(CardContent, {
-        children: _jsxs("form", {
-          onSubmit: handleSubmit,
-          className: "grid grid-cols-1 sm:grid-cols-2 gap-3",
-          children: [
-            _jsx(Input, {
-              placeholder: "Description",
-              value: description,
-              onChange: (e) => setDescription(e.target.value),
-              required: true,
-              disabled: isSubmitting,
-            }),
-            _jsx(Input, {
-              type: "number",
-              placeholder: "Amount",
-              value: amount,
-              onChange: (e) => setAmount(e.target.value),
-              min: "0",
-              step: "0.01",
-              required: true,
-              disabled: isSubmitting,
-            }),
-            _jsxs(Select, {
-              value: type,
-              onValueChange: (v) => {
-                setType(v);
-                setCategory("");
-              },
-              disabled: isSubmitting,
-              children: [
-                _jsx(SelectTrigger, { children: _jsx(SelectValue, {}) }),
-                _jsxs(SelectContent, {
-                  children: [
-                    _jsx(SelectItem, { value: "income", children: "Income" }),
-                    _jsx(SelectItem, { value: "expense", children: "Expense" }),
-                  ],
-                }),
-              ],
-            }),
-            _jsxs(Select, {
-              value: category,
-              onValueChange: setCategory,
-              disabled: isSubmitting,
-              children: [
-                _jsx(SelectTrigger, {
-                  children: _jsx(SelectValue, { placeholder: "Category" }),
-                }),
-                _jsx(SelectContent, {
-                  children: categories.map((c) =>
-                    _jsx(SelectItem, { value: c, children: c }, c),
-                  ),
-                }),
-              ],
-            }),
-            _jsx(Input, {
-              type: "date",
-              value: date,
-              onChange: (e) => setDate(e.target.value),
-              disabled: isSubmitting,
-            }),
-            _jsx(Button, {
-              type: "submit",
-              className: "sm:col-span-1",
-              disabled: isSubmitting,
-              children: isSubmitting
-                ? "Saving..."
-                : transaction
-                  ? "Update"
-                  : "Add",
-            }),
-          ],
-        }),
-      }),
-    ],
-  });
+
+  return (
+    <Card className="border-primary/20 animate-fade-in">
+      <CardHeader className="flex flex-row items-center justify-between pb-3">
+        <CardTitle className="text-sm font-semibold">
+          {transaction ? "Edit" : "Add"} Transaction
+        </CardTitle>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-7 w-7"
+          onClick={onClose}
+          disabled={isSubmitting}
+        >
+          <X className="h-4 w-4" />
+        </Button>
+      </CardHeader>
+
+      <CardContent>
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 gap-3 sm:grid-cols-2"
+        >
+          <Input
+            placeholder="Description"
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+            required
+            disabled={isSubmitting}
+          />
+
+          <Input
+            type="number"
+            placeholder="Amount"
+            value={amount}
+            onChange={(event) => setAmount(event.target.value)}
+            min="0"
+            step="0.01"
+            required
+            disabled={isSubmitting}
+          />
+
+          <Select
+            value={type}
+            onValueChange={(value) => {
+              setType(value);
+              setCategory("");
+            }}
+            disabled={isSubmitting}
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="income">Income</SelectItem>
+              <SelectItem value="expense">Expense</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select
+            value={category}
+            onValueChange={setCategory}
+            disabled={isSubmitting}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Category" />
+            </SelectTrigger>
+            <SelectContent>
+              {categories.map((currentCategory) => (
+                <SelectItem key={currentCategory} value={currentCategory}>
+                  {currentCategory}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Input
+            type="date"
+            value={date}
+            onChange={(event) => setDate(event.target.value)}
+            disabled={isSubmitting}
+          />
+
+          <Button
+            type="submit"
+            className="sm:col-span-1"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Saving..." : transaction ? "Update" : "Add"}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
+  );
 };
+
 export default TransactionForm;

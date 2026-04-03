@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig, transformWithEsbuild } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -14,9 +14,30 @@ export default defineConfig(({ mode }) => ({
       overlay: false,
     },
   },
-  plugins: [react(), mode === "development" && componentTagger()].filter(
-    Boolean,
-  ),
+  plugins: [
+    {
+      name: "load-js-files-as-jsx",
+      async transform(code, id) {
+        if (!id.includes("/src/") || !id.endsWith(".js")) {
+          return null;
+        }
+
+        return transformWithEsbuild(code, id, {
+          loader: "jsx",
+          jsx: "automatic",
+        });
+      },
+    },
+    react(),
+    mode === "development" && componentTagger(),
+  ].filter(Boolean),
+  optimizeDeps: {
+    esbuildOptions: {
+      loader: {
+        ".js": "jsx",
+      },
+    },
+  },
   resolve: {
     alias: {
       "@": path.resolve(currentDir, "./src"),

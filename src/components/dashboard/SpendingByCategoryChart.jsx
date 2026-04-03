@@ -62,36 +62,38 @@ const SpendingByCategoryChart = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="min-h-[260px] flex items-start gap-4">
-          <ResponsiveContainer width="55%" height={260}>
-            <PieChart>
-              <Pie
-                data={chartData}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                innerRadius={50}
-                outerRadius={85}
-                paddingAngle={3}
-              >
-                {chartData.map((item) => (
-                  <Cell key={item.name} fill={item.color} />
-                ))}
-              </Pie>
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: "hsl(var(--card))",
-                  border: "1px solid hsl(var(--border))",
-                  borderRadius: "12px",
-                  color: "hsl(var(--foreground))",
-                }}
-                formatter={(value) => [`₹${value.toLocaleString("en-IN")}`]}
-              />
-            </PieChart>
-          </ResponsiveContainer>
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-center">
+          <div className="h-[240px] w-full lg:h-[260px] lg:w-[55%] lg:min-w-[280px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={chartData}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={50}
+                  outerRadius={85}
+                  paddingAngle={3}
+                >
+                  {chartData.map((item) => (
+                    <Cell key={item.name} fill={item.color} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "hsl(var(--card))",
+                    border: "1px solid hsl(var(--border))",
+                    borderRadius: "12px",
+                    color: "hsl(var(--foreground))",
+                  }}
+                  formatter={(value) => [`₹${value.toLocaleString("en-IN")}`]}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
 
-          <div className="flex-1 max-h-[260px] space-y-2.5 overflow-y-auto pr-1">
+          <div className="min-w-0 flex-1 space-y-2.5 lg:max-h-[260px] lg:overflow-y-auto lg:pr-1">
             {chartData.map((item) => (
               <div key={item.name} className="flex items-center gap-2 text-sm">
                 <span
